@@ -1,14 +1,17 @@
 # PyDoomClient
 
-An experimental Python Doom client that reads and interprets classic Doom WAD files, rendering a playable first-person view using Pygame.
+An experimental Python Doom client that reads and interprets classic Doom WAD files, rendering a fully 3D first-person view using Pygame.
 
 ## Features
 
+- Full 3D rendering with perspective projection
 - WAD file parsing and interpretation
-- Raycasting-based first-person rendering
-- WASD movement and arrow key rotation
-- Debug mode with 2D map view (toggle with TAB)
+- Mouse look with WASD movement controls
+- Texture mapping system for walls
+- Debug mode with 2D map overlay (toggle with TAB)
 - Support for Freedoom and other compatible WAD files
+- Wall rendering with backface culling
+- Player position based on map data
 
 ## Requirements
 
@@ -62,15 +65,26 @@ just run [wad_path]
 
 If no WAD path is provided, the game will look for WAD files in the `wads` directory and use the first one found.
 
+You can also run the test script specifically for the 3D renderer:
+
+```bash
+python test_3d_renderer.py [wad_path]
+```
+
 ### Controls
 
+- **Mouse** - Look/rotate camera
 - `W` - Move forward
 - `S` - Move backward
 - `A` - Strafe left
 - `D` - Strafe right
-- `←` - Turn left
-- `→` - Turn right
-- `TAB` - Toggle debug mode (shows 2D map)
+- `Q` - Move up (for debugging)
+- `E` - Move down (for debugging)
+- `←` - Turn left (alternative to mouse)
+- `→` - Turn right (alternative to mouse)
+- `M` - Toggle mouse look on/off
+- `R` - Reset camera position
+- `TAB` - Toggle debug mode (shows 2D map overlay)
 - `ESC` - Exit game
 
 ## Development
@@ -88,9 +102,15 @@ PyDoomClient/
 ├── pydoomclient/          # Main package
 │   ├── __init__.py        # Package initialization
 │   ├── __main__.py        # Entry point
-│   ├── game.py            # Game loop and input handling
-│   ├── renderer.py        # Rendering engine
+│   ├── camera3d.py        # 3D camera and vector math
+│   ├── game3d.py          # 3D game loop and input handling
+│   ├── geometry3d.py      # 3D geometry conversion from 2D map data
+│   ├── renderer3d.py      # 3D rendering engine
+│   ├── renderer_bridge.py # Bridge between 2D and 3D renderers
+│   ├── texture3d.py       # Texture management for 3D renderer
+│   ├── renderer.py        # Legacy 2D rendering engine
 │   └── wad.py             # WAD file parsing
+├── test_3d_renderer.py    # Test script for 3D renderer
 └── wads/                  # Directory for WAD files
 ```
 
@@ -111,6 +131,15 @@ just clean      # Clean build artifacts
 The project uses:
 - Type hints with `mypy` for type checking
 - `ruff` for formatting and linting with an 88 character line limit
+
+## Future Improvements
+
+- Proper sector triangulation for floors and ceilings
+- Advanced lighting effects
+- Sprite rendering for enemies and items
+- Collision detection with walls
+- Weapon rendering and shooting mechanics
+- Sound effects and music playback
 
 ## License
 
