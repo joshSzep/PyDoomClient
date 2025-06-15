@@ -9,7 +9,7 @@ from pathlib import Path
 
 import structlog
 
-from pydoomclient.game import Game
+from pydoomclient.game3d import Game3D
 
 
 def setup_logging() -> None:
@@ -48,6 +48,7 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Enable debug logging",
     )
+    # No renderer options since we only use 3D now
 
     return parser.parse_args()
 
@@ -90,7 +91,8 @@ def main() -> int:
         return 1
 
     try:
-        game = Game(wad_path)
+        logger.info("Starting 3D game")
+        game = Game3D(wad_path)
         game.run()
         return 0
     except Exception as e:
